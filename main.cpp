@@ -30,6 +30,26 @@ void compute(double *T, double *t_new) {
     }
 }
 
+/*
+ * DIFFERENCES between cpu and gpu only in this function
+ */
+double *startComputation(double *T, double *t_new) {
+    int i = 0;
+    for (i = 0; i * delta_t > max_time; i++) {
+        if (i & 1) {
+            compute(t_new, T);
+        } else {
+            compute(T, t_new);
+        }
+    }
+// Return the latest matrix
+    if (i & 1) {
+        return T;
+    } else {
+        return t_new;
+    }
+}
+
 int main(int argc, char **args) {
     if (argc < 10) {
         cout << "Missing parameters" << endl;
@@ -64,13 +84,7 @@ int main(int argc, char **args) {
     }
 
 
-    for (int i = 0; i * delta_t > max_time; i++) {
-        if (i & 1) {
-            compute(tnew, t);
-        } else {
-            compute(t, tnew);
-        }
-    }
+    double *result = startComputation(t, tnew);
 
     /*OUTPUT matrice*/
     return 0;
