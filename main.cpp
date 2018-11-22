@@ -72,6 +72,7 @@ int main(int argc, char **args) {
         }
     }
 
+    /*OUTPUT matrice*/
     return 0;
 
 }
